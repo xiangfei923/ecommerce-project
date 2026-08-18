@@ -10,10 +10,12 @@ export function GoodsShow({ product }: GoodsShowProps) {
     <>
       <div className="product-info">{product.product.name}</div>
       <div className="product-info">Quantity: {product.quantity}</div>
+      {/* 懒加载图片 */}
       <img
         className="product-image"
         src={product.product.image}
         alt={product.product.name}
+        loading="lazy"
       />
     </>
   );

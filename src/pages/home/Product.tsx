@@ -23,11 +23,13 @@ export function Product({ product }: ProductProps) {
   return (
     <div className="product-container" data-testid="product-container">
       <div className="product-image-container">
+        {/* 懒加载：只加载可见区域的图片 */}
         <img
           className="product-image"
           data-testid="product-image"
           src={product.image}
           alt={product.name}
+          loading="lazy"
         />
       </div>
 
@@ -39,6 +41,7 @@ export function Product({ product }: ProductProps) {
           data-testid="product-rating-stars-image"
           src={`images/ratings/rating-${product.rating.stars * 10}.png`}
           alt="Rating"
+          loading="lazy"
         />
         <div className="product-rating-count link-primary">
           {product.rating.count}
@@ -59,7 +62,10 @@ export function Product({ product }: ProductProps) {
 
       <div className="product-spacer"></div>
 
-      <button className="add-to-cart-button button-primary" onClick={handleAddToCart}>
+      <button
+        className="add-to-cart-button button-primary"
+        onClick={handleAddToCart}
+      >
         Add to Cart
       </button>
     </div>

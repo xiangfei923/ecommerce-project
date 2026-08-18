@@ -47,7 +47,12 @@ export function OrdersPage() {
                 {order.products.map((orderProduct) => (
                   <Fragment key={orderProduct.productId}>
                     <div className="product-image-container">
-                      <img src={orderProduct.product.image} alt={orderProduct.product.name} />
+                      {/* 懒加载图片 */}
+                      <img 
+                        src={orderProduct.product.image} 
+                        alt={orderProduct.product.name}
+                        loading="lazy"
+                      />
                     </div>
 
                     <div className="product-details">
@@ -57,7 +62,12 @@ export function OrdersPage() {
                       </div>
                       <div className="product-quantity">Quantity: {orderProduct.quantity}</div>
                       <button className="buy-again-button button-primary">
-                        <img className="buy-again-icon" src="images/icons/buy-again.png" alt="Buy Again" />
+                        <img 
+                          className="buy-again-icon" 
+                          src="images/icons/buy-again.png" 
+                          alt="Buy Again"
+                          loading="lazy"
+                        />
                         <span className="buy-again-message">Add to Cart</span>
                       </button>
                     </div>

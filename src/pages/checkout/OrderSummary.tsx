@@ -39,10 +39,12 @@ export function OrderSummary({ deliveryOptions }: OrderSummaryProps) {
               <div className="cart-item-details-grid">
                 {/* 增加安全判断，防止 product 为 undefined 报错 */}
                 {cartItem.product && (
+                  // 懒加载图片
                   <img
                     className="product-image"
                     src={cartItem.product.image}
                     alt={cartItem.product.name}
+                    loading="lazy"
                   />
                 )}
 
