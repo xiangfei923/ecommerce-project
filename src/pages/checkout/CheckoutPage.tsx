@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import { useAppSelector } from "../../store/hooks";
 import { selectCartItems, selectCartItemCount } from "../../store/cartSlice";
 import { OrderSummary } from "./OrderSummary";
 import { PaymentSummary } from "./PaymentSummary";
 import { fetchDeliveryOptions, fetchPaymentSummary } from "../../api/checkoutApi";
-import type { DeliveryOptionType, PaymentSummaryType } from "../../types";
+import type { DeliveryOptionType, PaymentSummaryType, ProductType } from "../../types";
 import "./checkout-header.css";
 import "./CheckoutPage.css";
 
 export function CheckoutPage() {
+  const location = useLocation();
   const [deliveryOptions, setDeliveryOptions] = useState<DeliveryOptionType[]>([]);
   const [paymentSummary, setPaymentSummary] = useState<PaymentSummaryType | null>(null);
 
@@ -17,17 +19,55 @@ export function CheckoutPage() {
   // 读取购物车商品总数量（显示在结账页顶部）
   const totalQuantity = useAppSelector(selectCartItemCount);
 
+  // 检查是否是"立即购买"模式
+  const buyNowMode = location.state?.buyNow === true;
+  const buyNowProduct: ProductType | undefined = location.state?.product;
+  const initialBuyNowQuantity: number = location.state?.quantity || 1;
+  
+  // 立即购买模式下的本地状态
+  const [buyNowQuantity, setBuyNowQuantity] = useState(initialBuyNowQuantity);
+  const [buyNowShippingCost, setBuyNowShippingCost] = useState(0);
+
+  // 处理配送方式变化（立即购买模式）
+  const handleDeliveryChange = (deliveryOptionId: string, shippingCost: number) => {
+    setBuyNowShippingCost(shippingCost);
+  };
+  
+  // 处理数量变化（立即购买模式）
+  const handleQuantityChange = (newQuantity: number) => {
+    setBuyNowQuantity(newQuantity);
+  };
+
   useEffect(() => {
     const fetchCheckoutData = async () => {
       const options = await fetchDeliveryOptions();
       setDeliveryOptions(options);
 
-      const summary = await fetchPaymentSummary();
-      setPaymentSummary(summary);
+      // 立即购买模式：手动计算支付摘要
+      if (buyNowMode && buyNowProduct) {
+        const productCost = buyNowProduct.priceCents * buyNowQuantity;
+        const shippingCost = buyNowShippingCost; // 使用当前选择的配送费用
+        const totalBeforeTax = productCost + shippingCost;
+        const tax = Math.round(totalBeforeTax * 0.1);
+        const total = totalBeforeTax + tax;
+
+        setPaymentSummary({
+          totalItems: buyNowQuantity,
+          productCostCents: productCost,
+          shippingCostCents: shippingCost,
+          totalCostBeforeTaxCents: totalBeforeTax,
+          taxCents: tax,
+          totalCostCents: total
+        });
+      } else {
+        // 普通模式：从后端获取支付摘要
+        const summary = await fetchPaymentSummary();
+        setPaymentSummary(summary);
+      }
     };
 
     fetchCheckoutData();
-  }, [cart]);
+  }, [cart, buyNowMode, buyNowProduct, buyNowQuantity, buyNowShippingCost]);
 
   return (
     <>
@@ -45,7 +85,7 @@ export function CheckoutPage() {
           <div className="checkout-header-middle-section">
             Checkout (
             <a className="return-to-home-link" href="/">
-              {totalQuantity} items
+              {buyNowMode ? buyNowQuantity : totalQuantity} items
             </a>
             )
           </div>
@@ -60,8 +100,20 @@ export function CheckoutPage() {
         <div className="page-title">Review your order</div>
 
         <div className="checkout-grid">
-          <OrderSummary deliveryOptions={deliveryOptions} />
-          <PaymentSummary paymentSummary={paymentSummary} />
+          <OrderSummary 
+            deliveryOptions={deliveryOptions} 
+            buyNowMode={buyNowMode}
+            buyNowProduct={buyNowProduct}
+            buyNowQuantity={buyNowQuantity}
+            onDeliveryChange={handleDeliveryChange}
+            onQuantityChange={handleQuantityChange}
+          />
+          <PaymentSummary 
+            paymentSummary={paymentSummary}
+            buyNowMode={buyNowMode}
+            buyNowProduct={buyNowProduct}
+            buyNowQuantity={buyNowQuantity}
+          />
         </div>
       </div>
     </>

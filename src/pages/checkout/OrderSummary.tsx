@@ -1,81 +1,56 @@
-import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { selectCartItems, deleteCartItem } from "../../store/cartSlice";
-import { formatMoney } from "../../utils/money";
-import { DeliveryOptions } from "./DeliveryOptions";
-import type { DeliveryOptionType } from "../../types";
+import { CartItemCard } from "./CartItemCard";
+import type { DeliveryOptionType, ProductType, CartItemType } from "../../types";
 
 interface OrderSummaryProps {
   deliveryOptions: DeliveryOptionType[];
+  buyNowMode?: boolean;
+  buyNowProduct?: ProductType;
+  buyNowQuantity?: number;
+  onDeliveryChange?: (deliveryOptionId: string, shippingCost: number) => void;
+  onQuantityChange?: (newQuantity: number) => void;
 }
 
-export function OrderSummary({ deliveryOptions }: OrderSummaryProps) {
-  // 读取购物车里的所有商品
+export function OrderSummary({ 
+  deliveryOptions, 
+  buyNowMode = false,
+  buyNowProduct,
+  buyNowQuantity = 1,
+  onDeliveryChange,
+  onQuantityChange
+}: OrderSummaryProps) {
   const cart = useAppSelector(selectCartItems);
   const dispatch = useAppDispatch();
+
+  // 如果是"立即购买"模式，创建临时的购物车项
+  const itemsToDisplay: CartItemType[] = buyNowMode && buyNowProduct
+    ? [{
+        productId: buyNowProduct.id,
+        quantity: buyNowQuantity,
+        deliveryOptionId: deliveryOptions[0]?.id || "1",
+        product: buyNowProduct
+      }]
+    : cart;
 
   return (
     <div className="order-summary">
       {deliveryOptions.length > 0 &&
-        cart.map((cartItem) => {
-          const selectedDeliveryOption = deliveryOptions.find(
-            (deliveryOption) => deliveryOption.id === cartItem.deliveryOptionId
-          );
-
-          const handleDelete = () => {
-            dispatch(deleteCartItem(cartItem.productId));
-          };
-
-          return (
-            <div key={cartItem.productId} className="cart-item-container">
-              <div className="delivery-date">
-                Delivery date:{" "}
-                {selectedDeliveryOption &&
-                  dayjs(selectedDeliveryOption.estimatedDeliveryTimeMs).format(
-                    "dddd, MMMM D"
-                  )}
-              </div>
-
-              <div className="cart-item-details-grid">
-                {/* 增加安全判断，防止 product 为 undefined 报错 */}
-                {cartItem.product && (
-                  // 懒加载图片
-                  <img
-                    className="product-image"
-                    src={cartItem.product.image}
-                    alt={cartItem.product.name}
-                    loading="lazy"
-                  />
-                )}
-
-                <div className="cart-item-details">
-                  <div className="product-name">{cartItem.product?.name}</div>
-                  <div className="product-price">
-                    {cartItem.product ? formatMoney(cartItem.product.priceCents) : ""}
-                  </div>
-                  <div className="product-quantity">
-                    <span>
-                      Quantity:{" "}
-                      <span className="quantity-label">{cartItem.quantity}</span>
-                    </span>
-                    <span className="update-quantity-link link-primary">Update</span>
-                    <span
-                      className="delete-quantity-link link-primary"
-                      onClick={handleDelete}
-                    >
-                      Delete
-                    </span>
-                  </div>
-                </div>
-
-                <DeliveryOptions
-                  cartItem={cartItem}
-                  deliveryOptions={deliveryOptions}
-                />
-              </div>
-            </div>
-          );
-        })}
+        itemsToDisplay.map((cartItem) => (
+          <CartItemCard
+            key={cartItem.productId}
+            cartItem={cartItem}
+            deliveryOptions={deliveryOptions}
+            buyNowMode={buyNowMode}
+            onDelete={() => {
+              if (!buyNowMode) {
+                dispatch(deleteCartItem(cartItem.productId));
+              }
+            }}
+            onQuantityChange={onQuantityChange}
+            onDeliveryChange={onDeliveryChange}
+          />
+        ))}
     </div>
   );
 }

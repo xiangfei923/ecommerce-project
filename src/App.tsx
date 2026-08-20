@@ -7,6 +7,7 @@ import { CheckoutPage } from './pages/checkout/CheckoutPage';
 import { OrdersPage } from './pages/orders/OrdersPage';
 import TrackingPage from './pages/tracking/TrackingPage';
 import { SearchPage } from './pages/search/SearchPage';
+import { ProductDetailPage } from './pages/product-detail/ProductDetailPage';
 import './App.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
     <Routes>
       <Route index element={<HomePage />} />
       <Route path="search" element={<SearchPage />} />
+      <Route path="product/:productId" element={<ProductDetailPage />} />
       <Route path="checkout" element={<CheckoutPage />} />
       <Route path="orders" element={<OrdersPage />} />
       <Route path="/tracking/:orderId" element={<TrackingPage />} />

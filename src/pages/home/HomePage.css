@@ -119,6 +119,7 @@
 
 .home-page .product-price {
   font-weight: 700;
+  font-size: 18px;
   margin-bottom: 10px;
 }
 
@@ -154,4 +155,22 @@
   padding: 8px;
   height: 34px;
   margin-top: 1px;
+}
+
+
+/* 商品链接样式 */
+.product-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.product-link:hover .product-image {
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+.product-link:hover .product-name {
+  color: rgb(25, 135, 84);
+  transition: color 0.3s;
 }

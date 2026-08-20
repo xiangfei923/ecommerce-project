@@ -1,4 +1,5 @@
 import { useState, type ChangeEvent } from "react";
+import { Link } from "react-router";
 import { useAppDispatch } from "../../store/hooks";
 import { addToCart } from "../../store/cartSlice";
 import { formatMoney } from "../../utils/money";
@@ -22,18 +23,21 @@ export function Product({ product }: ProductProps) {
 
   return (
     <div className="product-container" data-testid="product-container">
-      <div className="product-image-container">
-        {/* 懒加载：只加载可见区域的图片 */}
-        <img
-          className="product-image"
-          data-testid="product-image"
-          src={product.image}
-          alt={product.name}
-          loading="lazy"
-        />
-      </div>
+      {/* 商品图片和名称可点击跳转到详情页 */}
+      <Link to={`/product/${product.id}`} className="product-link">
+        <div className="product-image-container">
+          {/* 懒加载：只加载可见区域的图片 */}
+          <img
+            className="product-image"
+            data-testid="product-image"
+            src={product.image}
+            alt={product.name}
+            loading="lazy"
+          />
+        </div>
 
-      <div className="product-name limit-text-to-2-lines">{product.name}</div>
+        <div className="product-name limit-text-to-2-lines">{product.name}</div>
+      </Link>
 
       <div className="product-rating-container">
         <img

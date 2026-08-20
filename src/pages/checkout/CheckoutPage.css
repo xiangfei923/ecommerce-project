@@ -209,3 +209,110 @@
   margin-top: 20px;
   margin-bottom: 19px;
 }
+
+/* 数量编辑容器 */
+.quantity-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.quantity-selector-small {
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: white;
+}
+
+.quantity-selector-small:focus {
+  outline: none;
+  border-color: #198754;
+}
+
+/* 修改按钮 */
+.btn-update {
+  padding: 4px 12px;
+  background-color: #198754;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-left: 8px;
+}
+
+.btn-update:hover {
+  background-color: #157347;
+}
+
+/* 保存按钮 */
+.btn-save {
+  padding: 4px 12px;
+  background-color: #198754;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-save:hover {
+  background-color: #157347;
+}
+
+/* 取消按钮 */
+.btn-cancel {
+  padding: 4px 12px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-cancel:hover {
+  background-color: #5c636a;
+}
+
+/* 美化原有的 Update 和 Delete 链接 */
+.update-quantity-link,
+.delete-quantity-link {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.update-quantity-link {
+  background-color: #e7f5ec;
+  color: #198754;
+}
+
+.update-quantity-link:hover {
+  background-color: #198754;
+  color: white;
+}
+
+.delete-quantity-link {
+  background-color: #f8d7da;
+  color: #dc3545;
+}
+
+.delete-quantity-link:hover {
+  background-color: #dc3545;
+  color: white;
+}

@@ -7,3 +7,9 @@ export async function fetchProducts(): Promise<ProductType[]> {
   const response = await axios.get<ProductType[]>(ENDPOINTS.PRODUCTS);
   return response.data;
 }
+
+// 根据 ID 获取单个商品详情
+export async function fetchProductById(id: string): Promise<ProductType> {
+  const response = await axios.get<ProductType>(`${ENDPOINTS.PRODUCTS}/${id}`);
+  return response.data;
+}
