@@ -1,6 +1,6 @@
 import { formatMoney } from "../../utils/money";
 
-interface ProductInfoProps {
+interface ProductRightProps {
   name: string;
   rating: {
     stars: number;
@@ -13,7 +13,7 @@ interface ProductInfoProps {
   onBuyNow: () => void;
 }
 
-export function ProductInfo({
+export function ProductRight({
   name,
   rating,
   priceCents,
@@ -21,11 +21,13 @@ export function ProductInfo({
   onQuantityChange,
   onAddToCart,
   onBuyNow,
-}: ProductInfoProps) {
+}: ProductRightProps) {
   return (
     <div className="product-info-section">
+      {/* 商品标题 */}
       <h1 className="product-title">{name}</h1>
 
+      {/* 评分 */}
       <div className="product-rating">
         <img
           src={`/images/ratings/rating-${rating.stars * 10}.png`}
@@ -35,15 +37,18 @@ export function ProductInfo({
         <span className="rating-count">({rating.count} 评价)</span>
       </div>
 
+      {/* 价格 */}
       <div className="product-price-section">
         <span className="price-label">价格：</span>
         <span className="product-price">{formatMoney(priceCents)}</span>
       </div>
 
+      {/* 库存 */}
       <div className="product-stock">
         <span className="stock-available">有货</span>
       </div>
 
+      {/* 数量选择 */}
       <div className="quantity-section">
         <label>数量：</label>
         <select
@@ -59,6 +64,7 @@ export function ProductInfo({
         </select>
       </div>
 
+      {/* 操作按钮 */}
       <div className="action-buttons">
         <button
           className="add-to-cart-btn button-primary"

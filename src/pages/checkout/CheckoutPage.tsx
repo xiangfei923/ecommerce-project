@@ -26,6 +26,7 @@ export function CheckoutPage() {
   
   // 立即购买模式下的本地状态
   const [buyNowQuantity, setBuyNowQuantity] = useState(initialBuyNowQuantity);
+  //立即购买模式的运费
   const [buyNowShippingCost, setBuyNowShippingCost] = useState(0);
 
   // 处理配送方式变化（立即购买模式）

@@ -5,9 +5,8 @@ import { addToCart } from "../../store/cartSlice";
 import { fetchProductById } from "../../api/productsApi";
 import { Header } from "../../components/Header";
 import { Toast } from "../../components/Toast";
-import { ProductBreadcrumb } from "./ProductBreadcrumb";
 import { ProductImage } from "./ProductImage";
-import { ProductInfo } from "./ProductInfo";
+import { ProductRight } from "./ProductRight";
 import { ProductDescription } from "./ProductDescription";
 import type { ProductType } from "../../types";
 import "./ProductDetailPage.css";
@@ -102,12 +101,12 @@ export function ProductDetailPage() {
       )}
       
       <div className="product-detail-page">
-        <ProductBreadcrumb productName={product.name} />
-
         <div className="product-detail-container">
+          {/* 左侧：商品图片 */}
           <ProductImage image={product.image} name={product.name} />
 
-          <ProductInfo
+          {/* 右侧：商品信息 */}
+          <ProductRight
             name={product.name}
             rating={product.rating}
             priceCents={product.priceCents}
@@ -118,7 +117,8 @@ export function ProductDetailPage() {
           />
         </div>
 
-        <ProductDescription keywords={product.keywords} />
+        {/* 商品详情描述 */}
+        <ProductDescription name={product.name} keywords={product.keywords} />
       </div>
     </>
   );
