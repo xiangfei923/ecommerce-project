@@ -1,6 +1,6 @@
 // 定义"购物车模块"的状态、、数据读取（Selector）、以及最终的 reducer
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchCartItems, addCartItem, deleteCartItem as deleteCartItemApi, updateCartItemDeliveryOption } from '../api/cartApi';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { addCartItem, deleteCartItem as deleteCartItemApi, fetchCartItems, updateCartItemDeliveryOption } from '../api/cartApi';
 import { placeOrder as placeOrderApi } from '../api/ordersApi';
 import type { CartItemType } from '../types';
 import type { RootState } from './store';
@@ -79,6 +79,11 @@ export function selectCartItems(state: RootState): CartItemType[] {
 // 读取购物车里的商品总数量
 export function selectCartItemCount(state: RootState): number {
   return state.cart.items.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+// 读取购物车的加载状态（用于区分"还没加载"和"确实为空"）
+export function selectCartStatus(state: RootState): CartState['status'] {
+  return state.cart.status;
 }
 
 

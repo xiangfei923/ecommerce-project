@@ -1,12 +1,11 @@
-import { useParams,Link} from "react-router";
-import {GoodsShow} from "./GoodsShow";
-import { ProgressShow, type DeliveryStatus } from "./ProgressShow";
-import { useEffect, useState } from "react";
-import { Header } from "../../components/Header";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router";
 import { fetchOrderTracking } from "../../api/ordersApi";
 import type { TrackingOrderType } from "../../types";
-import "./tracking.css"
+import { GoodsShow } from "./GoodsShow";
+import { ProgressShow, type DeliveryStatus } from "./ProgressShow";
+import "./tracking.scss";
 
 function getDeliverStatus(deliverTimeMs:number):DeliveryStatus{
   const now=Date.now();
@@ -45,7 +44,6 @@ if (requestStatus==="loading"){
   return(
     <>
     <title>Tracking</title>
-    <Header/>
     <div className="tracking-page">
       <div className="order-tracking">Loading ...</div>
     </div>
@@ -56,7 +54,6 @@ if (requestStatus === "error" || !order || order.products?.length === 0){
   return(
   <>
     <title>Tracking</title>
-    <Header/>
      <div className="tracking-page">
       <div className="order-tracking">
         <Link className="back-to-orders-link link-primary" to="/orders">View all orders</Link>
@@ -72,7 +69,6 @@ const deliveryStatus=getDeliverStatus(trackingProduct.estimatedDeliveryTimeMs);
 return (
   <>
   <title>Tracking</title>
-  <Header/>
   <div className="tracking-page">
       <div className="order-tracking">
         <Link className="back-to-orders-link link-primary" to="/orders">View all orders</Link>

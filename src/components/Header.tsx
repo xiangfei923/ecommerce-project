@@ -1,11 +1,21 @@
-import { Link } from 'react-router';
-import { useAppSelector } from '../store/hooks';
+import { useState, type FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router';
 import { selectCartItemCount } from '../store/cartSlice';
-import './header.css';
+import { useAppSelector } from '../store/hooks';
+import './header.scss';
 
 export function Header() {
   // 直接读取"购物车商品总数量"，计算逻辑已经封装在 cartSlice 里
   const totalQuantity = useAppSelector(selectCartItemCount);
+  const [search, setSearch] = useState('');
+  const navigate = useNavigate();
+
+  // 提交搜索：跳转到商品列表页，并把搜索词写到 URL 上
+  const handleSearch = (event: FormEvent) => {
+    event.preventDefault();
+    const term = search.trim();
+    navigate(term ? `/products?search=${encodeURIComponent(term)}` : '/products');
+  };
 
   return (
     <div className="header">
@@ -16,12 +26,18 @@ export function Header() {
         </Link>
       </div>
 
-      <div className="middle-section">
-        <input className="search-bar" type="text" placeholder="Search" />
-        <button className="search-button">
+      <form className="middle-section" onSubmit={handleSearch}>
+        <input
+          className="search-bar"
+          type="text"
+          placeholder="Search"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+        />
+        <button className="search-button" type="submit">
           <img className="search-icon" src="images/icons/search-icon.png" alt="Search" />
         </button>
-      </div>
+      </form>
 
       <div className="right-section">
         <Link className="orders-link header-link" to="/orders">

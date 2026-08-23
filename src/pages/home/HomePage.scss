@@ -1,0 +1,34 @@
+.home-page {
+  margin-top: 60px;
+
+  .home-hero {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 20px 0;
+  }
+
+  .home-cta {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+    text-align: center;
+
+    h2 {
+      font-size: 26px;
+      margin: 0 0 8px;
+    }
+
+    p {
+      color: rgb(110, 110, 110);
+      margin: 0 0 20px;
+    }
+
+    .home-shop-button {
+      display: inline-block;
+      padding: 12px 28px;
+      height: auto;
+      text-decoration: none;
+      font-size: 16px;
+    }
+  }
+}

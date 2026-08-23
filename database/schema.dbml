@@ -1,0 +1,86 @@
+// =============================================================
+// Ecommerce 数据库设计 (DBML)
+// 用法：打开 https://dbdiagram.io/d 把本文件内容整段粘进去，
+//       右侧会自动生成带连线的 ER 关系图，可导出 PNG/PDF/SQL。
+// =============================================================
+
+Table product {
+  id               char(36)     [pk, default: `uuid()`]
+  name             varchar(255) [not null]
+  image            varchar(500) [not null]
+  rating_stars     decimal(2,1) [not null, default: 0.0]
+  rating_count     int          [not null, default: 0]
+  base_price_cents int          [not null, note: '列表页展示价/默认价']
+  created_at       datetime
+  updated_at       datetime
+}
+
+Table product_variant {
+  id          char(36)     [pk, default: `uuid()`]
+  product_id  char(36)     [not null, ref: > product.id]
+  name        varchar(100) [not null, note: 'Standard/Deluxe/Premium']
+  price_cents int          [not null, note: '该型号真实价格']
+  sort_order  int          [not null, default: 0]
+  created_at  datetime
+  updated_at  datetime
+
+  indexes {
+    (product_id, name) [unique]
+  }
+}
+
+Table keyword {
+  id   bigint       [pk, increment]
+  name varchar(100) [not null, unique]
+}
+
+Table product_keyword {
+  product_id char(36) [not null, ref: > product.id]
+  keyword_id bigint   [not null, ref: > keyword.id]
+
+  indexes {
+    (product_id, keyword_id) [pk]
+  }
+}
+
+Table delivery_option {
+  id            varchar(10) [pk, note: '"1"/"2"/"3"']
+  delivery_days int         [not null]
+  price_cents   int         [not null]
+}
+
+Table cart_item {
+  id                 bigint      [pk, increment]
+  product_id         char(36)    [not null, ref: > product.id]
+  variant_id         char(36)    [ref: > product_variant.id, note: '选中的型号']
+  quantity           int         [not null, note: '1..10']
+  delivery_option_id varchar(10) [not null, ref: > delivery_option.id]
+  created_at         datetime
+  updated_at         datetime
+
+  indexes {
+    (product_id, variant_id) [unique]
+  }
+}
+
+Table orders {
+  id               char(36)  [pk, default: `uuid()`]
+  order_time       datetime  [not null]
+  total_cost_cents int       [not null]
+  created_at       datetime
+  updated_at       datetime
+}
+
+Table order_item {
+  id                    bigint       [pk, increment]
+  order_id              char(36)     [not null, ref: > orders.id]
+  product_id            char(36)     [not null, ref: > product.id]
+  variant_id            char(36)     [note: '型号快照(可空)']
+  product_name          varchar(255) [not null, note: '快照']
+  product_image         varchar(500) [not null, note: '快照']
+  variant_name          varchar(100) [note: '快照']
+  unit_price_cents      int          [not null, note: '下单时单价快照']
+  quantity              int          [not null]
+  delivery_option_id    varchar(10)
+  estimated_delivery_at datetime     [not null]
+}

@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router";
+import { fetchDeliveryOptions, fetchPaymentSummary } from "../../api/checkoutApi";
+import { selectCartItemCount, selectCartItems, selectCartStatus } from "../../store/cartSlice";
 import { useAppSelector } from "../../store/hooks";
-import { selectCartItems, selectCartItemCount } from "../../store/cartSlice";
+import type { DeliveryOptionType, PaymentSummaryType } from "../../types";
+import "./checkout-header.scss";
+import "./CheckoutPage.scss";
 import { OrderSummary } from "./OrderSummary";
 import { PaymentSummary } from "./PaymentSummary";
-import { fetchDeliveryOptions, fetchPaymentSummary } from "../../api/checkoutApi";
-import type { DeliveryOptionType, PaymentSummaryType } from "../../types";
-import "./checkout-header.css";
-import "./CheckoutPage.css";
 
 export function CheckoutPage() {
   const [deliveryOptions, setDeliveryOptions] = useState<DeliveryOptionType[]>([]);
@@ -16,6 +17,11 @@ export function CheckoutPage() {
   const cart = useAppSelector(selectCartItems);
   // 读取购物车商品总数量（显示在结账页顶部）
   const totalQuantity = useAppSelector(selectCartItemCount);
+  // 购物车加载状态：用于区分"还没加载完"和"确实为空"
+  const cartStatus = useAppSelector(selectCartStatus);
+
+  // 购物车已加载完成且没有任何商品 → 显示空购物车提示
+  const isCartEmpty = cartStatus === "succeeded" && cart.length === 0;
 
   useEffect(() => {
     const fetchCheckoutData = async () => {
@@ -59,10 +65,22 @@ export function CheckoutPage() {
       <div className="checkout-page">
         <div className="page-title">Review your order</div>
 
-        <div className="checkout-grid">
-          <OrderSummary deliveryOptions={deliveryOptions} />
-          <PaymentSummary paymentSummary={paymentSummary} />
-        </div>
+        {isCartEmpty ? (
+          <div className="cart-empty">
+            <div className="cart-empty-title">The cart is empty</div>
+            <p className="cart-empty-text">
+              Looks like you haven't added anything yet.
+            </p>
+            <Link className="button-primary cart-empty-button" to="/products">
+              Browse products
+            </Link>
+          </div>
+        ) : (
+          <div className="checkout-grid">
+            <OrderSummary deliveryOptions={deliveryOptions} />
+            <PaymentSummary paymentSummary={paymentSummary} />
+          </div>
+        )}
       </div>
     </>
   );

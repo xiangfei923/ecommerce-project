@@ -1,5 +1,5 @@
-import { Product } from "./Product";
 import type { ProductType } from "../../types";
+import { Product } from "./Product";
 
 interface ProductsGridProps {
   products: ProductType[];

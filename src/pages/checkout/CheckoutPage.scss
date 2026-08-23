@@ -119,6 +119,60 @@
   margin-left: 3px;
 }
 
+/* 数量操作按钮：Update / Delete，带图标 */
+.checkout-page .cart-item-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 10px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: rgb(25, 135, 84);
+}
+
+.checkout-page .cart-item-action svg {
+  display: block;
+}
+
+.checkout-page .cart-item-action:hover {
+  opacity: 0.75;
+  text-decoration: underline;
+}
+
+.checkout-page .delete-quantity-link {
+  color: rgb(193, 53, 53);
+}
+
+/* 空购物车提示 */
+.checkout-page .cart-empty {
+  border: 1px solid rgb(222, 222, 222);
+  border-radius: 6px;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.checkout-page .cart-empty-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.checkout-page .cart-empty-text {
+  color: rgb(110, 110, 110);
+  margin-bottom: 22px;
+}
+
+.checkout-page .cart-empty-button {
+  display: inline-block;
+  padding: 12px 26px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
 @media (max-width: 1000px) {
   .checkout-page .delivery-options {
     /* grid-column: 1 means this element will be placed

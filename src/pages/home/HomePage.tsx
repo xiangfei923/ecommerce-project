@@ -1,28 +1,39 @@
 import { useEffect, useState } from "react";
-import { Header } from "../../components/Header";
-import { ProductsGrid } from "./ProductsGrid";
+import { Link } from "react-router";
 import { fetchProducts } from "../../api/productsApi";
-import type { ProductType } from "../../types";
-import "./HomePage.css";
+import { Carousel, type CarouselSlide } from "../../components/Carousel";
+import "./HomePage.scss";
 
 export function HomePage() {
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const [slides, setSlides] = useState<CarouselSlide[]>([]);
 
   useEffect(() => {
-    const getHomeData = async () => {
-      const data = await fetchProducts();
-      setProducts(data);
-    };
-
-    getHomeData();
+    fetchProducts().then((products) => {
+      // 取前 5 个商品作为轮播 banner，每张关联对应的商品 id
+      const bannerSlides = products.slice(0, 5).map((product) => ({
+        id: product.id,
+        image: product.image,
+        name: product.name,
+      }));
+      setSlides(bannerSlides);
+    });
   }, []);
 
   return (
     <>
       <title>Ecommerce Project</title>
-      <Header />
       <div className="home-page">
-        <ProductsGrid products={products} />
+        <section className="home-hero">
+          <Carousel slides={slides} />
+        </section>
+
+        <section className="home-cta">
+          <h2>Discover our products</h2>
+          <p>Browse the full catalog and find what you need.</p>
+          <Link className="home-shop-button button-primary" to="/products">
+            Shop all products
+          </Link>
+        </section>
       </div>
     </>
   );

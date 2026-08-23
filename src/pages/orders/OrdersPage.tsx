@@ -1,11 +1,10 @@
 import dayjs from "dayjs";
-import { useState, useEffect, Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router";
-import { Header } from "../../components/Header";
-import { formatMoney } from "../../utils/money";
 import { fetchOrders } from "../../api/ordersApi";
 import type { OrderType } from "../../types";
-import "./OrdersPage.css";
+import { formatMoney } from "../../utils/money";
+import "./OrdersPage.scss";
 
 export function OrdersPage() {
   const [orders, setOrders] = useState<OrderType[]>([]);
@@ -19,7 +18,6 @@ export function OrdersPage() {
   return (
     <>
       <title>Orders</title>
-      <Header />
       <div className="orders-page">
         <div className="page-title">Your Orders</div>
         <div className="orders-grid">
