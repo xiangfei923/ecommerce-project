@@ -2,7 +2,7 @@
 .product-detail-page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 80px 20px 20px; /* 增加顶部间距，避免被header遮挡 */
 }
 
 /* 加载和错误状态 */
@@ -227,7 +227,6 @@
   }
 }
 
-
 /* 商品标签 */
 .product-keywords {
   margin-top: 20px;
@@ -248,7 +247,6 @@
 .keyword-tag:hover {
   background-color: #e0e0e0;
 }
-
 
 /* 返回首页链接样式 */
 .back-home-link {

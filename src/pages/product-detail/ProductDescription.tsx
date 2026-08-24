@@ -32,7 +32,7 @@ export function ProductDescription({ name, keywords }: ProductDescriptionProps) 
       <div className="description-content">
         <p>{generateDescription()}</p>
         {keywords && keywords.length > 0 && (
-          <p>商品标签：{keywords.join(' · ')}</p>
+          <p>商品标签：{keywords.join('、')}</p>
         )}
       </div>
     </div>

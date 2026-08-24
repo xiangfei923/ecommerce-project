@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 父工程坐标 -->
+    <parent>
+        <groupId>com.ecommerce</groupId>
+        <artifactId>ecommerce-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <!-- 当前模块坐标 -->
+    <artifactId>ecommerce-service</artifactId>
+    <packaging>jar</packaging>
+    <name>ecommerce-service</name>
+    <description>业务逻辑层 - 处理业务逻辑</description>
+
+    <dependencies>
+        <!-- 依赖 dao 层：需要使用 Mapper 访问数据库 -->
+        <dependency>
+            <groupId>com.ecommerce</groupId>
+            <artifactId>ecommerce-dao</artifactId>
+        </dependency>
+
+        <!-- 依赖 common 层：需要使用公共工具类 -->
+        <dependency>
+            <groupId>com.ecommerce</groupId>
+            <artifactId>ecommerce-common</artifactId>
+        </dependency>
+
+        <!-- Spring Boot Starter：提供基础功能 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+</project>
