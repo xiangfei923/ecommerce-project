@@ -4,11 +4,14 @@ import { Link } from "react-router";
 import { Header } from "../../components/Header";
 import { formatMoney } from "../../utils/money";
 import { fetchOrders } from "../../api/ordersApi";
+import { useAppDispatch } from "../../store/hooks";
+import { addToCart } from "../../store/cartSlice";
 import type { OrderType } from "../../types";
 import "./OrdersPage.css";
 
 export function OrdersPage() {
   const [orders, setOrders] = useState<OrderType[]>([]);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     fetchOrders().then((data) => {
@@ -61,7 +64,10 @@ export function OrdersPage() {
                         Arriving on: {dayjs(orderProduct?.estimatedDeliveryTimeMs).format("YYYY-MM-DD")}
                       </div>
                       <div className="product-quantity">Quantity: {orderProduct.quantity}</div>
-                      <button className="buy-again-button button-primary">
+                      <button
+                        className="buy-again-button button-primary"
+                        onClick={() => dispatch(addToCart({ productId: orderProduct.productId, quantity: 1 }))}
+                      >
                         <img 
                           className="buy-again-icon" 
                           src="images/icons/buy-again.png" 

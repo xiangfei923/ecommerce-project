@@ -13,8 +13,14 @@ export function Product({ product }: ProductProps) {
   const [quantity, setQuantity] = useState<number>(1);
   const dispatch = useAppDispatch();
 
-  const handleAddToCart = () => {
-    dispatch(addToCart({ productId: product.id, quantity }));
+  const handleAddToCart = async () => {
+    try {
+      // 请求成功后再把数量重置为 1
+      await dispatch(addToCart({ productId: product.id, quantity })).unwrap();
+      setQuantity(1);
+    } catch {
+      // 请求失败时保留用户选择的数量，不重置
+    }
   };
 
   const selectQuantity = (event: ChangeEvent<HTMLSelectElement>) => {

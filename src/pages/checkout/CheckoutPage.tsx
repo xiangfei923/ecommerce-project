@@ -30,7 +30,7 @@ export function CheckoutPage() {
   const [buyNowShippingCost, setBuyNowShippingCost] = useState(0);
 
   // 处理配送方式变化（立即购买模式）
-  const handleDeliveryChange = (deliveryOptionId: string, shippingCost: number) => {
+  const handleDeliveryChange = (_deliveryOptionId: string, shippingCost: number) => {
     setBuyNowShippingCost(shippingCost);
   };
   
